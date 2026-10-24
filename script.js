@@ -1,20 +1,17 @@
 'use strict';
-// Requires i18n.js to be loaded first (provides t, translateStatic, setLang)
 const SHIP_MIN = 50, SHIP_FEE = 5.99;
 const A = 'assets/aistudio/';
 const usd = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 const r2 = n => Math.round(n * 100) / 100;
 
-// Values/labels are translation keys; t() returns the text itself when there is no key (e.g. '90%')
-const STATS = [['90%','stat.fat'],['stat.double','stat.protein'],['100%','stat.natural'],['1/3','stat.calories'],['2×','stat.protein']];
+const STATS = [['90%','Less fat'],['Double','Protein'],['100%','natural'],['1/3','Calories'],['2×','Protein']];
 const FEATURES = [
-  ['feat.1.t','feat.1.d'],
-  ['feat.2.t','feat.2.d'],
-  ['feat.3.t','feat.3.d'],
-  ['feat.4.t','feat.4.d'],
-  ['feat.5.t','feat.5.d']
+  ['Made From\nReal Nuts','Crafted from premium roasted Kampot cashews with zero fillers or preservatives.'],
+  ['Slow\nRoasted','Slow dry-roasting locks in natural aroma and rich buttery crunch.'],
+  ['No Refined\nSugar','Glazed only with pure wildflower honey or natural citrus.'],
+  ['No Artificial\nFlavoring','What you taste is 100% authentic Kampot cashews.'],
+  ['2× The\nProtein','Clean plant protein and heart-healthy minerals in every serving.']
 ];
-// English text below is also the translation key (see i18n.js)
 const BUNDLES = [
   {id:'bundle-complete',name:'The Complete Collection',price:45,originalPrice:60,rating:4.95,image:A+'bundle-complete-4pack.png',description:'Save 25% on all 4: Honey Butter and Chili Lime in 250g Jar and 100g Pouch.'},
   {id:'bundle-nut-lovers',name:'Artisan 250g Jar Duo',price:30,originalPrice:40,rating:4.93,image:A+'bundle-jars-duo.png',description:'Both signature 250g jars, Honey Butter and Chili Lime, sealed for peak crunch.'},
@@ -47,20 +44,15 @@ function summarize(items, promo) {
   return {count, subtotal: r2(subtotal), original: r2(original), discount, autoship: r2(autoship), shipFee,
     total: r2(after + shipFee), progress: Math.min(100, Math.round(after / SHIP_MIN * 100)), free: after >= SHIP_MIN};
 }
-
-// Cart items store translation KEYS (name / flavor / variantLabel), not translated text,
-// so the bag re-translates correctly when the language changes.
-const itemLabel = i => t(i.name) + (i.flavor ? ` (${t(i.flavor)})` : '');
-
 function addItem(item) {
   const found = state.cart.find(i => i.id === item.id);
   if (found) found.quantity++; else state.cart.push({...item, quantity: 1});
-  toast(t('toast.added', {name: itemLabel(item)}));
+  toast('Added to bag — ' + item.name);
   render();
 }
-const addProduct = p => addItem({id: `${p.id}-${p.packageSize}-once`, name: p.name, flavor: p.flavor, variantLabel: p.packageSize,
+const addProduct = p => addItem({id: `${p.id}-${p.packageSize}-once`, name: `${p.name} (${p.flavor})`, variantLabel: p.packageSize,
   price: p.price, originalPrice: p.price, image: p.image, isAutoship: false});
-const addBundle = b => addItem({id: b.id, name: b.name, variantLabel: 'bundle.variant',
+const addBundle = b => addItem({id: b.id, name: b.name, variantLabel: '25% OFF Bundle + Free Spoon & Recipe Book',
   price: b.price, originalPrice: b.originalPrice, image: b.image});
 
 // ---- Rendering ----
@@ -68,41 +60,29 @@ const $ = id => document.getElementById(id);
 function card(o, kind) {
   const el = document.createElement('article');
   el.className = 'card';
-  const name = t(o.name);
-  const sub = kind === 'p' ? `${t(o.flavor)} · ${t(o.packageSize)}` : '';
-  el.innerHTML = `<img src="${o.image}" alt="${name}" loading="lazy"><h3>${name}</h3>${sub ? `<strong>${sub}</strong>` : ''}
-    <p>${t(o.description)}</p><div class="rating">★ ${o.rating}${o.reviewCount ? ` (${o.reviewCount})` : ''}</div>
+  const sub = kind === 'p' ? `${o.flavor} · ${o.packageSize}` : '';
+  el.innerHTML = `<img src="${o.image}" alt="${o.name}" loading="lazy"><h3>${o.name}</h3>${sub ? `<strong>${sub}</strong>` : ''}
+    <p>${o.description}</p><div class="rating">★ ${o.rating}${o.reviewCount ? ` (${o.reviewCount})` : ''}</div>
     <div class="price"><strong>${usd(o.price)}</strong>${o.originalPrice > o.price ? `<s>${usd(o.originalPrice)}</s>` : ''}</div>
-    <button class="btn btn-brown">${t('btn.add')}</button>`;
+    <button class="btn btn-brown">Add to Cart</button>`;
   el.querySelector('button').onclick = () => kind === 'p' ? addProduct(o) : addBundle(o);
   return el;
 }
-
-// Parts of the page that are built from JS data (rebuilt on language change)
-function renderCatalog() {
-  $('stats').innerHTML = STATS.map(([a, b]) => `<div><b>${t(a)}</b>${t(b)}</div>`).join('');
-  $('featureGrid').innerHTML = FEATURES.map(([ti, d]) => `<div class="card feature"><h3>${t(ti)}</h3><p>${t(d)}</p></div>`).join('');
-  $('bundleGrid').innerHTML = '';
-  $('productGrid').innerHTML = '';
-  BUNDLES.forEach(b => $('bundleGrid').appendChild(card(b, 'b')));
-  PRODUCTS.forEach(p => $('productGrid').appendChild(card(p, 'p')));
-}
-
 function render() {
   const s = summarize(state.cart, state.promo);
   $('cartCount').textContent = s.count;
   $('cartTotal').textContent = usd(s.total);
   $('shipBar').style.width = s.progress + '%';
-  $('shipMsg').textContent = s.free ? t('cart.free') : t('cart.more', {amount: usd(SHIP_MIN - (s.subtotal - s.discount))});
+  $('shipMsg').textContent = s.free ? '🎉 You’ve unlocked free shipping!' : `Add ${usd(SHIP_MIN - (s.subtotal - s.discount))} more for free shipping`;
   $('promoBox').checked = state.promo;
 
   const ul = $('cartItems');
-  ul.innerHTML = state.cart.length ? '' : `<li class="empty" style="display:block">${t('cart.empty')}</li>`;
+  ul.innerHTML = state.cart.length ? '' : '<li class="empty" style="display:block">Your bag is empty.</li>';
   state.cart.forEach(i => {
     const li = document.createElement('li');
-    li.innerHTML = `<img src="${i.image}" alt=""><div><strong>${itemLabel(i)}</strong><div>${t(i.variantLabel || '')}</div>
+    li.innerHTML = `<img src="${i.image}" alt=""><div><strong>${i.name}</strong><div>${i.variantLabel || ''}</div>
       <div class="qty"><button data-d="-1">−</button><span>${i.quantity}</span><button data-d="1">+</button>
-      <button data-rm style="width:auto;border-radius:9px;padding:0 8px">${t('cart.remove')}</button></div></div><strong>${usd(i.price * i.quantity)}</strong>`;
+      <button data-rm style="width:auto;border-radius:9px;padding:0 8px">Remove</button></div></div><strong>${usd(i.price * i.quantity)}</strong>`;
     li.querySelectorAll('[data-d]').forEach(b => b.onclick = () => {
       i.quantity += +b.dataset.d;
       state.cart = state.cart.filter(x => x.quantity > 0);
@@ -113,15 +93,12 @@ function render() {
   });
 
   const row = (l, v, c = '') => `<div class="${c}"><dt>${l}</dt><dd style="margin:0">${v}</dd></div>`;
-  $('summary').innerHTML = row(t('cart.subtotal'), usd(s.subtotal))
-    + (s.autoship ? row(t('cart.autoship'), '−' + usd(s.autoship)) : '')
-    + (s.discount ? row(t('cart.promoRow'), '−' + usd(s.discount)) : '')
-    + row(t('cart.shipping'), s.shipFee ? usd(s.shipFee) : t('cart.freeShip'))
-    + row(t('cart.total'), usd(s.total), 'total');
+  $('summary').innerHTML = row('Subtotal', usd(s.subtotal))
+    + (s.autoship ? row('Autoship savings', '−' + usd(s.autoship)) : '')
+    + (s.discount ? row('First-order 15% off', '−' + usd(s.discount)) : '')
+    + row('Shipping', s.shipFee ? usd(s.shipFee) : 'Free')
+    + row('Total', usd(s.total), 'total');
 }
-
-// Called by setLang() in i18n.js
-function renderAll() { renderCatalog(); render(); }
 
 let toastTimer;
 function toast(msg) {
@@ -138,16 +115,18 @@ function setCart(open) {
 function setModal(open) { $('modal').hidden = !open; }
 
 // ---- Init ----
-document.querySelectorAll('.lang button').forEach(b => b.onclick = () => setLang(b.dataset.lang));
+$('stats').innerHTML = STATS.map(([a, b]) => `<div><b>${a}</b>${b}</div>`).join('');
+$('featureGrid').innerHTML = FEATURES.map(([t, d]) => `<div class="card feature"><h3>${t}</h3><p>${d}</p></div>`).join('');
+BUNDLES.forEach(b => $('bundleGrid').appendChild(card(b, 'b')));
+PRODUCTS.forEach(p => $('productGrid').appendChild(card(p, 'p')));
+
 $('cartBtn').onclick = $('toastView').onclick = () => setCart(true);
 $('closeCart').onclick = $('overlay').onclick = () => setCart(false);
 $('offerBtn').onclick = $('claimBtn').onclick = () => setModal(true);
 $('closeModal').onclick = () => setModal(false);
-$('unlockBtn').onclick = () => { state.promo = true; setModal(false); toast(t('toast.unlocked')); render(); };
+$('unlockBtn').onclick = () => { state.promo = true; setModal(false); toast('Discount unlocked! Applied.'); render(); };
 $('promoBox').onchange = e => { state.promo = e.target.checked; render(); };
 $('clearBtn').onclick = () => { state.cart = []; render(); };
-$('checkoutBtn').onclick = () => toast(t(state.cart.length ? 'toast.checkoutDemo' : 'cart.empty'));
+$('checkoutBtn').onclick = () => toast(state.cart.length ? 'Checkout is not connected in this demo.' : 'Your bag is empty.');
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { setCart(false); setModal(false); } });
-
-translateStatic();   // apply saved language (English by default) to the HTML
-renderAll();
+render();
