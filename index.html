@@ -6,75 +6,85 @@
 <title>Kampot Harvest Co. | The Pride of Kampot, Roasted to Perfection.</title>
 <meta name="description" content="Artisan Roasted Cashews in Honey Butter and Chilli Lime.">
 <link rel="icon" type="image/png" href="assets/aistudio/image_2e860bec.png">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&family=Kantumruy+Pro:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a class="skip" href="#content">Skip to content</a>
+<a class="skip" href="#content" data-i18n="skip">Skip to content</a>
 <header class="nav">
   <a href="#top" class="brand"><img src="assets/aistudio/image_2e860bec.png" alt="Kampot Harvest Co."></a>
   <nav>
-    <a href="#products">Shop</a><a href="#bundles">Bundles</a><a href="#features">The Kampot Way</a>
+    <a href="#products" data-i18n="nav.shop">Shop</a><a href="#bundles" data-i18n="nav.bundles">Bundles</a><a href="#features" data-i18n="nav.way">The Kampot Way</a>
   </nav>
   <div class="nav-actions">
-    <button id="offerBtn" class="btn btn-light">15% OFF First Order</button>
-    <button id="cartBtn" class="btn btn-dark" aria-label="Open cart">Bag <span id="cartCount">0</span> · <span id="cartTotal">$0.00</span></button>
+    <div class="lang" role="group" aria-label="Language" data-i18n-aria="lang.label">
+      <button type="button" data-lang="en" lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="km" lang="km" aria-pressed="false">ខ្មែរ</button>
+      <button type="button" data-lang="zh" lang="zh-CN" aria-pressed="false">中文</button>
+    </div>
+    <button id="offerBtn" class="btn btn-light" data-i18n="nav.offer">15% OFF First Order</button>
+    <button id="cartBtn" class="btn btn-dark" aria-label="Open cart" data-i18n-aria="nav.bagLabel"><span data-i18n="nav.bag">Bag</span> <span id="cartCount">0</span> · <span id="cartTotal">$0.00</span></button>
   </div>
 </header>
 
 <main id="content">
   <section class="hero" id="top">
     <div>
-      <h1><span>The Pride of Kampot,</span><span class="dark">Roasted to Perfection.</span></h1>
-      <p>Hand-selected Cambodian cashews slow-roasted in small batches. Infused with wild forest honey, creamy churned butter, and sun-dried Kampot bird’s eye chili.</p>
-      <a href="#products" class="btn btn-brown">Go Shop</a>
+      <h1><span data-i18n="hero.l1">The Pride of Kampot,</span><span class="dark" data-i18n="hero.l2">Roasted to Perfection.</span></h1>
+      <p data-i18n="hero.text">Hand-selected Cambodian cashews slow-roasted in small batches. Infused with wild forest honey, creamy churned butter, and sun-dried Kampot bird’s eye chili.</p>
+      <a href="#products" class="btn btn-brown" data-i18n="hero.cta">Go Shop</a>
     </div>
-    <img src="assets/aistudio/bundle-complete-4pack.png" alt="Kampot Harvest cashew collection">
+    <img src="assets/aistudio/bundle-complete-4pack.png" alt="Kampot Harvest cashew collection" data-i18n-alt="hero.alt">
   </section>
 
   <section class="stats" id="stats"></section>
 
   <section class="offer">
-    <span class="pill">★ Limited Batch Roasted Fresh in Kampot ★</span>
-    <h2>25% OFF</h2><h3>Don’t Miss This Bundle Offer</h3>
-    <p>Save 25% On Artisan Roasted Cashews: Honey Butter &amp; Chili Lime in 250g Jar ($20) &amp; 100g Pouch ($10)</p>
-    <button class="btn btn-dark" id="claimBtn">Claim Offer</button>
+    <span class="pill" data-i18n="offer.pill">★ Limited Batch Roasted Fresh in Kampot ★</span>
+    <h2 data-i18n="offer.title">25% OFF</h2><h3 data-i18n="offer.sub">Don’t Miss This Bundle Offer</h3>
+    <p data-i18n="offer.text">Save 25% On Artisan Roasted Cashews: Honey Butter &amp; Chili Lime in 250g Jar ($20) &amp; 100g Pouch ($10)</p>
+    <button class="btn btn-dark" id="claimBtn" data-i18n="offer.claim">Claim Offer</button>
   </section>
 
-  <section class="section" id="bundles"><h2>Bundles</h2><div class="grid grid-3" id="bundleGrid"></div></section>
-  <section class="section" id="products"><h2>Artisan Roasted Cashews</h2><div class="grid grid-4" id="productGrid"></div></section>
-  <section class="section" id="features"><h2>The Kampot Way</h2><div class="grid grid-5" id="featureGrid"></div></section>
+  <section class="section" id="bundles"><h2 data-i18n="nav.bundles">Bundles</h2><div class="grid grid-3" id="bundleGrid"></div></section>
+  <section class="section" id="products"><h2 data-i18n="Artisan Roasted Cashews">Artisan Roasted Cashews</h2><div class="grid grid-4" id="productGrid"></div></section>
+  <section class="section" id="features"><h2 data-i18n="nav.way">The Kampot Way</h2><div class="grid grid-5" id="featureGrid"></div></section>
 </main>
 
 <footer class="footer">
-  <h3>Artisan Roasted Cashews</h3>
-  <p>Crafted in small batches with single-origin Cambodian cashews. Choose your favorite flavor in on-the-go resealable pouches or reusable glass jars.</p>
-  <p>The Pride of Kampot, Roasted to Perfection. Taste the difference from the first bite.</p>
+  <h3 data-i18n="Artisan Roasted Cashews">Artisan Roasted Cashews</h3>
+  <p data-i18n="footer.p1">Crafted in small batches with single-origin Cambodian cashews. Choose your favorite flavor in on-the-go resealable pouches or reusable glass jars.</p>
+  <p data-i18n="footer.p2">The Pride of Kampot, Roasted to Perfection. Taste the difference from the first bite.</p>
 </footer>
 
-<div id="toast" class="toast" hidden><span id="toastMsg"></span> <button id="toastView">View bag</button></div>
+<div id="toast" class="toast" hidden><span id="toastMsg"></span> <button id="toastView" data-i18n="toast.view">View bag</button></div>
 <div id="overlay" class="overlay" hidden></div>
 
 <aside id="cart" class="drawer" aria-hidden="true">
-  <div class="drawer-head"><h3>Your Bag</h3><button id="closeCart" aria-label="Close">✕</button></div>
+  <div class="drawer-head"><h3 data-i18n="cart.title">Your Bag</h3><button id="closeCart" aria-label="Close" data-i18n-aria="cart.close">✕</button></div>
   <div class="ship"><p id="shipMsg"></p><div class="bar"><i id="shipBar"></i></div></div>
   <ul id="cartItems"></ul>
   <div class="drawer-foot">
-    <label class="promo"><input type="checkbox" id="promoBox"> Apply 15% first-order code</label>
+    <label class="promo"><input type="checkbox" id="promoBox"> <span data-i18n="cart.promo">Apply 15% first-order code</span></label>
     <dl id="summary"></dl>
-    <button class="btn btn-brown wide" id="checkoutBtn">Checkout</button>
-    <button class="link" id="clearBtn">Clear bag</button>
+    <button class="btn btn-brown wide" id="checkoutBtn" data-i18n="cart.checkout">Checkout</button>
+    <button class="link" id="clearBtn" data-i18n="cart.clear">Clear bag</button>
   </div>
 </aside>
 
 <div id="modal" class="modal" hidden>
   <div class="modal-card">
-    <h3>15% OFF Your First Order</h3>
-    <p>Unlock your welcome discount on any Kampot Harvest Co. cashews.</p>
-    <button class="btn btn-brown" id="unlockBtn">Unlock Discount</button>
-    <button class="link" id="closeModal">No thanks</button>
+    <h3 data-i18n="modal.title">15% OFF Your First Order</h3>
+    <p data-i18n="modal.text">Unlock your welcome discount on any Kampot Harvest Co. cashews.</p>
+    <button class="btn btn-brown" id="unlockBtn" data-i18n="modal.unlock">Unlock Discount</button>
+    <button class="link" id="closeModal" data-i18n="modal.no">No thanks</button>
   </div>
 </div>
+
+<!-- i18n.js must load BEFORE script.js -->
+<script src="i18n.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -11,7 +11,16 @@ h1,h2,h3{font-family:'Plus Jakarta Sans','Gill Sans',sans-serif;margin:0}
 .link{background:none;border:0;text-decoration:underline;color:var(--green);cursor:pointer;margin-top:8px;font-family:inherit}
 .nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 5vw;background:var(--cream);border-bottom:1px solid #384a2222;flex-wrap:wrap}
 .brand img{height:48px}.nav nav{display:flex;gap:24px}.nav nav a{color:var(--green);text-decoration:none;font-weight:600}
-.nav-actions{display:flex;gap:10px}
+.nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* ---- Language switcher ---- */
+.lang{display:flex;border:1.5px solid var(--green);border-radius:999px;overflow:hidden}
+.lang button{border:0;background:transparent;color:var(--green);padding:9px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
+.lang button+button{border-left:1.5px solid var(--green)}
+.lang button:hover{background:#384a2214}
+.lang button[aria-pressed="true"]{background:var(--green);color:var(--cream)}
+.lang button:focus-visible{outline:2px solid var(--brown);outline-offset:-4px}
+
 .hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:32px;padding:56px 5vw}
 .hero h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.1;font-weight:400;margin-bottom:16px}
 .hero h1 span{display:block;color:var(--sage)}.hero h1 .dark{color:var(--green)}
@@ -28,7 +37,7 @@ h1,h2,h3{font-family:'Plus Jakarta Sans','Gill Sans',sans-serif;margin:0}
 .feature{text-align:center}.feature h3{white-space:pre-line}
 .footer{background:var(--green) url(assets/aistudio/kbach-pattern-green.svg);color:var(--cream);text-align:center;padding:48px 5vw}.footer p{max-width:620px;margin:12px auto 0;line-height:1.6}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:50;background:var(--green);color:var(--cream);padding:12px 22px;border-radius:999px;display:flex;gap:12px;font-weight:600;box-shadow:0 8px 30px #0004}
-.toast button{background:none;border:0;color:#9AB87A;font-weight:700;text-decoration:underline;cursor:pointer}
+.toast button{background:none;border:0;color:#9AB87A;font-weight:700;text-decoration:underline;cursor:pointer;font-family:inherit}
 .overlay{position:fixed;inset:0;background:#0006;z-index:40}
 .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--cream);z-index:45;transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column}
 .drawer.open{transform:none}
@@ -38,10 +47,29 @@ h1,h2,h3{font-family:'Plus Jakarta Sans','Gill Sans',sans-serif;margin:0}
 #cartItems{list-style:none;margin:0;padding:0 20px;flex:1;overflow:auto}
 #cartItems li{display:grid;grid-template-columns:64px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid #384a2222;align-items:center;font-size:14px}
 #cartItems img{width:64px;height:64px;object-fit:contain}.qty{display:flex;gap:6px;align-items:center;margin-top:6px}
-.qty button{width:26px;height:26px;border-radius:50%;border:1px solid var(--green);background:none;cursor:pointer;color:var(--green)}
+.qty button{width:26px;height:26px;border-radius:50%;border:1px solid var(--green);background:none;cursor:pointer;color:var(--green);font-family:inherit}
 .empty{text-align:center;padding:40px 0;opacity:.7}
 .drawer-foot{padding:16px 20px;border-top:1px solid #384a2222}.promo{display:flex;gap:8px;font-size:14px;margin-bottom:10px}
 dl{margin:0 0 12px;font-size:14px}dl div{display:flex;justify-content:space-between;padding:2px 0}dl .total{font-weight:800;font-size:16px}
 .modal{position:fixed;inset:0;z-index:55;display:grid;place-items:center;background:#0006}.modal[hidden]{display:none}
 .modal-card{background:var(--cream);padding:32px;border-radius:24px;max-width:380px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+
+/* ---- Per-language typography ----
+   Manrope / Plus Jakarta Sans have no Khmer or Chinese glyphs, so swap the font stacks. */
+html[lang="km"] body,
+html[lang="km"] h1,html[lang="km"] h2,html[lang="km"] h3{font-family:'Kantumruy Pro','Noto Sans Khmer','Khmer OS',sans-serif}
+html[lang="zh-CN"] body,
+html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+
+/* Khmer has tall stacked vowels/subscripts: give it more line height so nothing clips */
+html[lang="km"] body{line-height:1.7}
+html[lang="km"] h1,html[lang="km"] h2,html[lang="km"] h3{line-height:1.4}
+html[lang="km"] .hero h1{line-height:1.4}
+html[lang="km"] .card p,html[lang="km"] .hero p,html[lang="km"] .footer p{line-height:1.8}
+html[lang="km"] .offer h2{font-size:2.8rem}
+
+/* Chinese reads better slightly looser, and the huge "25% OFF" can shrink a touch */
+html[lang="zh-CN"] body{line-height:1.6}
+html[lang="zh-CN"] .hero p,html[lang="zh-CN"] .card p,html[lang="zh-CN"] .footer p{line-height:1.8}
+
 @media(max-width:900px){.hero,.grid-3{grid-template-columns:1fr}.grid-4,.grid-5{grid-template-columns:repeat(2,1fr)}.nav nav{display:none}}
